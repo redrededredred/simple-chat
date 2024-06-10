@@ -23,7 +23,7 @@
         </form>
     </div>
 <footer>
-    <a href="">src </a>
+    <a href="https://github.com/redrededredred/simple-chat">src 🔧</a>
 </footer>
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script>
@@ -33,9 +33,16 @@
     const input = document.getElementById("chatinput");
     const messages = document.getElementById("messages");
 
+    // Username logic
+    const defaultUsername = "Anon";
+    let username = prompt("Choose Username: ", defaultUsername);
+    if (username == null || username == "") {
+        username = defaultUsername
+    };
+
     function handleMessage(msg) {
         const item = document.createElement("li");
-        item.textContent = msg;
+        item.textContent = msg.username + ": " + msg.content;
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
     };
@@ -43,7 +50,7 @@
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         if (input.value) {
-            socket.emit('chatmsg', input.value);
+            socket.emit('chatmsg', {"content": input.value, "username": username});
             input.value = '';
         };
     });
