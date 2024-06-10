@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat App</title>
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 4;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple Chat</h1>
+    <div id="chatbox">
+        <ul id="messages">
+
+        </ul>
+        <form id="chatform" action="">
+            <input id="chatinput" autocomplete="off"><button>Senden</button>
+        </form>
+    </div>
+<footer>
+    <a href="">src </a>
+</footer>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+    const socket = io();
+
+    const form = document.getElementById("chatform");
+    const input = document.getElementById("chatinput");
+    const messages = document.getElementById("messages");
+
+    function handleMessage(msg) {
+        const item = document.createElement("li");
+        item.textContent = msg;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+    };
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (input.value) {
+            socket.emit('chatmsg', input.value);
+            input.value = '';
+        };
+    });
+
+    socket.on("chatupdate", (msg) => {
+        handleMessage(msg);
+    });
+</script>
+</body>
+</html>
