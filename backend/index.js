@@ -7,9 +7,12 @@ const io = IO(server);
 const { join } = require("node:path");
 const frontendPath = "C:\\Users\\Paul\\Documents\\GitHub\\simple-chat\\frontend\\"; // TODO: make less retarded
 const port = 3000;
-const host = "127.0.0.1";
+const host = "0.0.0.0";
 
-//Static stuff
+// Temp testing stuff
+let online = []
+
+// Static stuff
 app.use(express.static('frontend'))
 
 // Util functions
@@ -30,6 +33,12 @@ io.on("connection", (socket) => {
       });
     socket.on("chatmsg", (msg) => {
         handleMessage(msg);
+    });
+    socket.on("settingupdate", (msg) => {
+        online.push(msg.username);
+        console.log(online)
+        // Inform frontend
+        io.emit("onlineupdate", online);
     });
 });
 

@@ -7,18 +7,22 @@
     <link href="./tail.css" rel="stylesheet">
 </head>
 <body>
-    <h1 class="text-xl font-bold underline">Simple Chat</h1>
-    <div id="chatbox">
+    <div id="header" class="container mx-auto my-4">
+        <h1 class="text-xl font-bold underline">Simple Chat</h1>
+        <p id="onlinelist">Online: </p>
+    </div>
+    <div id="chatbox" class="container mx-auto bg-yellow-200 my-4 h-72 overflow-y-scroll">
         <ul id="messages">
 
         </ul>
         <form id="chatform" action="">
-            <input id="chatinput" autocomplete="off"><button>Senden</button>
+            <input class="bg-slate-200 p-1" id="chatinput" placeholder="Nachricht..." autocomplete="off">
+            <button>Senden</button>
         </form>
     </div>
-<footer>
-    <a href="https://github.com/redrededredred/simple-chat">src 🔧</a>
-</footer>
+    <div id="footer" class="container mx-auto my-4">
+        <a href="https://github.com/redrededredred/simple-chat">src 🔧</a>
+    </div>
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script>
     const socket = io();
@@ -33,12 +37,12 @@
     if (username == null || username == "") {
         username = defaultUsername
     };
+    socket.emit("settingupdate", {"username": username})
 
     function handleMessage(msg) {
         const item = document.createElement("li");
         item.textContent = msg.username + ": " + msg.content;
         messages.appendChild(item);
-        window.scrollTo(0, document.body.scrollHeight);
     };
 
     // Chatinput logic
@@ -52,6 +56,11 @@
 
     socket.on("chatupdate", (msg) => {
         handleMessage(msg);
+    });
+
+    socket.on("onlineupdate", (msg) => {
+        let onlinelist = document.getElementById("onlinelist");
+        onlinelist.innerHTML = "Online: " + msg.toString();
     });
 </script>
 </body>
