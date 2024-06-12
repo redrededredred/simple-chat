@@ -9,6 +9,9 @@ const frontendPath = "C:\\Users\\Paul\\Documents\\GitHub\\simple-chat\\frontend\
 const port = 3000;
 const host = "127.0.0.1";
 
+//Static stuff
+app.use(express.static('frontend'))
+
 // Util functions
 function handleMessage(msg) {
     io.emit("chatupdate", msg);
