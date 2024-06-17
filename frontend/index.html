@@ -11,12 +11,14 @@
         <h1 class="text-xl font-bold underline">Simple Chat</h1>
         <p id="onlinelist">Online: </p>
     </div>
-    <div id="chatbox" class="container mx-auto bg-yellow-200 my-4 h-72 overflow-y-scroll">
-        <ul id="messages">
+    <div id="chatbox" class="relative container mx-auto bg-yellow-200 my-4 h-72">
+        <div class="h-56 overflow-y-scroll p-2" id="messages_container">
+            <ul id="messages" class="">
 
-        </ul>
-        <form id="chatform" action="">
-            <input class="bg-slate-200 p-1" id="chatinput" placeholder="Nachricht..." autocomplete="off">
+            </ul>
+        </div>
+        <form id="chatform" action="" class="absolute bottom-0 left-0">
+            <input class="bg-slate-200 p-1 m-2" id="chatinput" placeholder="Nachricht..." autocomplete="off">
             <button>Senden</button>
         </form>
     </div>
@@ -42,6 +44,7 @@
     function handleMessage(msg) {
         const item = document.createElement("li");
         item.textContent = msg.username + ": " + msg.content;
+        item.setAttribute("class", "bg-slate-200 m-2 p-2")
         messages.appendChild(item);
     };
 
@@ -56,6 +59,8 @@
 
     socket.on("chatupdate", (msg) => {
         handleMessage(msg);
+        a = document.getElementById("messages_container");
+        a.scrollTo(0, a.scrollHeight);
     });
 
     socket.on("onlineupdate", (msg) => {
