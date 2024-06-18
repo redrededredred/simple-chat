@@ -11,7 +11,7 @@
         <h1 class="text-xl font-bold underline">Simple Chat</h1>
         <p id="onlinelist">Online: </p>
     </div>
-    <div id="chatbox" class="relative container mx-auto bg-yellow-200 my-4 h-72">
+    <div id="chatbox" class="relative container mx-auto bg-yellow-200 my-4 h-72 rounded-md">
         <div class="h-56 overflow-y-scroll p-2" id="messages_container">
             <ul id="messages" class="">
 
@@ -41,10 +41,18 @@
     };
     socket.emit("settingupdate", {"username": username})
 
+    
     function handleMessage(msg) {
         const item = document.createElement("li");
         item.textContent = msg.username + ": " + msg.content;
-        item.setAttribute("class", "bg-slate-200 m-2 p-2")
+        if (msg.username == username)
+        {
+            item.setAttribute("class", "bg-slate-200 m-2 p-2 rounded-full text-left")
+        }
+        else
+        {
+            item.setAttribute("class", "bg-red-200 m-2 p-2 rounded-full text-right")
+        }
         messages.appendChild(item);
     };
 
@@ -67,6 +75,11 @@
         let onlinelist = document.getElementById("onlinelist");
         onlinelist.innerHTML = "Online: " + msg.toString();
     });
+
+    // username
+    socket.on('disconnect', () => {
+        socket.emit("settingupdate", {"username": username});
+      });
 </script>
 </body>
 </html>

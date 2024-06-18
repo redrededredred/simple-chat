@@ -36,10 +36,11 @@ io.on("connection", (socket) => {
     });
     socket.on("settingupdate", (msg) => {
         online.push(msg.username);
-        console.log(online)
+        console.log(online);
         // Inform frontend
         io.emit("onlineupdate", online);
     });
+  
 });
 
 server.listen(port, host, () => {
